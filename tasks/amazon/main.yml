@@ -1,7 +1,43 @@
 ---
-- name: Manage network
-  ec2_vpc_net:
-    name: '{{ cloud_network_name }}'
-    cidr_block: '{{ cloud_network_cidr }}'
-    region: '{{ cloud_network_region }}'
-    state: '{{ cloud_volume_state|default("present") }}'
+- block:
+  - name: Manage network
+    ec2_vpc_net:
+      name: '{{ cloud_network_name }}'
+      cidr_block: '{{ cloud_network_cidr }}'
+      region: '{{ cloud_network_region }}'
+      state: '{{ cloud_network_state|default("present") }}'
+    register: ec2_vpc_net
+
+  - name: Manage subnet
+    ec2_vpc_subnet:
+      vpc_id: '{{ ec2_vpc_net.vpc.id }}'
+      cidr: '{{ cloud_network_cidr }}'
+      region: '{{ cloud_network_region }}'
+      state: '{{ cloud_network_state|default("present") }}'
+
+  when: cloud_network_state|default('present') == 'present'
+
+
+- block:
+  - name: Retrieve vpc informations
+    ec2_vpc_net_facts:
+      region: '{{ cloud_network_region }}'
+      filters:
+        'tag:Name': '{{ cloud_network_name }}'
+    register: ec2_vpc_net
+
+  - name: Manage subnet
+    ec2_vpc_subnet:
+      vpc_id: '{{ ec2_vpc_net.vpcs[0].id }}'
+      cidr: '{{ cloud_network_cidr }}'
+      region: '{{ cloud_network_region }}'
+      state: '{{ cloud_network_state|default("present") }}'
+
+  - name: Manage network
+    ec2_vpc_net:
+      name: '{{ cloud_network_name }}'
+      cidr_block: '{{ cloud_network_cidr }}'
+      region: '{{ cloud_network_region }}'
+      state: '{{ cloud_network_state|default("present") }}'
+
+  when: cloud_network_state|default('present') == 'absent'
