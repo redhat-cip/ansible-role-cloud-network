@@ -14,6 +14,8 @@
       cidr: '{{ cloud_network_cidr }}'
       region: '{{ cloud_network_region }}'
       state: '{{ cloud_network_state|default("present") }}'
+      tags:
+        Name: '{{ cloud_network_name }}'
 
   when: cloud_network_state|default('present') == 'present'
 
