@@ -32,7 +32,7 @@ Please refer to [ansible-cloud](https://github.com/redhat-cip/ansible-cloud) [RE
         name: cloud-network
       vars:
         cloud_network_name: ansiblecloud-testnetwork
-        cloud_network_size: 192.168.42.0/24
+        cloud_network_cidr: 192.168.42.0/24
         cloud_network_region: nova
 ```
 
