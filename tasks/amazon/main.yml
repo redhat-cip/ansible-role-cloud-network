@@ -1,0 +1,7 @@
+---
+- name: Manage network
+  ec2_vpc_net:
+    name: '{{ cloud_network_name }}'
+    cidr_block: '{{ cloud_network_cidr }}'
+    region: '{{ cloud_network_region }}'
+    state: '{{ cloud_volume_state|default("present") }}'

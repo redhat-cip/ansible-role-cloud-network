@@ -1,0 +1,12 @@
+---
+- name: Manage network
+  os_network:
+    name: '{{ cloud_network_name }}'
+    state: '{{ cloud_network_state|default("present") }}'
+
+- name: Manage subnet
+  os_subnet:
+    network_name: '{{ cloud_network_name }}'
+    name: '{{ cloud_network_name }}-subnet'
+    cidr: '{{ cloud_network_cidr }}'
+  when: cloud_network_state|default("present") == 'present'

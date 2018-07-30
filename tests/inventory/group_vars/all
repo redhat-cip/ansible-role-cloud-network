@@ -1,0 +1,5 @@
+ansible_host: localhost
+ansible_connection: local
+
+cloud_network_name: ansiblecloud-testnetwork
+cloud_network_cidr: 192.168.42.0/24

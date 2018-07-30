@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Determine platform for which to run the tests
+      set_fact:
+        host: "{{ lookup('env', 'ANSIBLE_CLOUD_PROVIDER') }}"
+
+- name: Running tests for '{{ hostvars.localhost.host }}'
+  hosts: '{{ hostvars.localhost.host }}'
+  vars:
+      ansible_cloud_provider: "{{ lookup('env', 'ANSIBLE_CLOUD_PROVIDER') }}"
+  tasks:
+    - name: Create network
+      include_role:
+        name: ansible-role-cloud-network
+
+    - name: Delete network
+      include_role:
+        name: ansible-role-cloud-network
+      vars:
+        cloud_network_state: absent

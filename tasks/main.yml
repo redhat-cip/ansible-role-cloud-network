@@ -1,0 +1,3 @@
+---
+- name: Include provider specific task
+  include_tasks: '{{ ansible_cloud_provider|lower }}/main.yml'
